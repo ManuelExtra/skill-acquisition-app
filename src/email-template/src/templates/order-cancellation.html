@@ -1,0 +1,267 @@
+---
+title: 'Your order has been cancelled.'
+preheader: ''
+bodyClass: bg-slate-50
+---
+
+<x-main>
+  <div class="bg-slate-50 sm:px-4 font-sans">
+    <table align="center">
+      <tr>
+        <td class="w-[600px] max-w-full">
+          <table class="w-full">
+            <tr>
+              <td class="pt-12 pb-5 sm:py-8 sm:px-6 text-center">
+                <a href="https://guardmaster-new.netlify.app">
+                  <img
+                    src="https://res.cloudinary.com/greenmouse-tech/image/upload/v1706009737/GuardMaster/Guardmaster_transparent1_1_1_wzdsac.png"
+                    width="300"
+                    alt="@{{app}}"
+                  />
+                </a>
+              </td>
+            </tr>
+
+            <tr role="separator">
+              <td class="leading-8">&zwj;</td>
+            </tr>
+            <tr>
+              <td class="w-full sm:px-0 text-left">
+                <table class="w-full">
+                  <tr>
+                    <td class="pb-8">
+                      <table class="w-full">
+                        <tr>
+                          <td
+                            class="p-12 sm:px-6 text-base text-slate-700 bg-white rounded shadow-sm"
+                          >
+                            <h1
+                              class="m-0 mb-6 text-2xl sm:leading-8 text-black font-semibold"
+                            >
+                              Hi @{{firstName}},
+                            </h1>
+
+                            <p class="m-0 text-xl leading-6">
+                              Unfortunately, the item(s) below from your order
+                              have been cancelled
+                            </p>
+
+                            <br />
+                            <p class="m-0 text-xl leading-6 font-semibold">
+                              If your order has been prepaid, we will proceed
+                              with the refund into your payment bank card/ bank
+                              account within 24hours and notify you. It may take
+                              up to 3 - 7 business days for your bank to credit
+                              the refund amount to your account.
+                            </p>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td class="px-6 py-6 sm:px-0 text-left bg-slate-100">
+                <div>
+                  <span class="text-base font-bold text-black">
+                    Transaction date:
+                  </span>
+
+                  <span class="text-base text-black">&nbsp; @{{trxDate}}</span>
+                </div>
+                <div>
+                  <span class="text-base font-bold text-black">
+                    Transaction number:
+                  </span>
+
+                  <span class="text-base text-black">&nbsp; @{{trxNo}}</span>
+                </div>
+
+                <x-spacer height="24px" />
+
+                <table class="table-auto text-black w-full">
+                  <thead class="border-2 border-black">
+                    <tr class="py-3 border-2">
+                      <th
+                        class="py-3 text-xl pr-3"
+                        style="border-bottom: 1.5px solid black"
+                      >
+                        Course name
+                      </th>
+                      <th
+                        class="py-3 text-xl pr-3"
+                        style="border-bottom: 1.5px solid black"
+                      >
+                        List price
+                      </th>
+                      <th
+                        class="py-3 text-xl"
+                        style="border-bottom: 1.5px solid black"
+                      >
+                        Your price
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @{{#each items}}
+                    <tr>
+                      <td
+                        class="pr-6 pt-3 pb-3 max-w-lg text-wrap text-lg font-extrabold"
+                      >
+                        @{{course.title}}
+                      </td>
+                      <td
+                        class="pr-6 pt-3 pb-3 align-bottom text-lg font-medium"
+                      >
+                        $@{{course.price}}
+                      </td>
+                      <td
+                        class="pr-6 pt-3 pb-3 align-bottom text-lg font-medium"
+                      >
+                        $@{{price}}
+                      </td>
+                    </tr>
+                    @{{/each}}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td
+                        colspan="2"
+                        class="text-right pr-6 py-2 align-bottom text-lg font-bold"
+                      >
+                        Subtotal:
+                      </td>
+                      <td
+                        class="text-right pr-6 py-2 align-bottom text-lg font-medium"
+                      >
+                        @{{subAmount}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        colspan="2"
+                        class="text-right pr-6 pt-2 pb-3 align-bottom text-lg font-bold"
+                        style="border-bottom: 3px solid black"
+                      >
+                        Tax rate:
+                      </td>
+                      <td
+                        class="text-right pr-6 pt-2 pb-3 align-bottom text-lg font-medium"
+                        style="border-bottom: 3px solid black"
+                      >
+                        @{{taxRate}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        colspan="2"
+                        class="text-right pr-6 py-3 align-bottom text-lg font-bold"
+                      >
+                        Total:
+                      </td>
+                      <td
+                        class="text-right pr-6 py-3 align-bottom text-lg font-medium"
+                      >
+                        @{{total}}
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+
+                <table class="w-full">
+                  <tr>
+                    <td
+                      class="w-1/2 pr-2 sm:px-0 sm:pb-8 sm:w-full sm:inline-block align-top"
+                    >
+                      <table class="w-full">
+                        <tr>
+                          <td class="p-2">
+                            <h2
+                              class="m-0 text-xl leading-6 text-black font-extrabold"
+                            >
+                              Purchased by
+                            </h2>
+
+                            <x-spacer
+                              height="10px"
+                              style="border-bottom: 1px solid black"
+                            />
+
+                            <div class="text-black">
+                              <p class="text-lg">
+                                <b>@{{firstName}} @{{lastName}}</b>
+                              </p>
+                              <p class="text-lg">
+                                <b>Payment method:</b> @{{gateway}}
+                              </p>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                    <td
+                      class="w-1/2 pl-2 sm:px-0 sm:w-full sm:inline-block align-top"
+                    >
+                      <table class="w-full">
+                        <tr>
+                          <td class="p-2">
+                            <h2
+                              class="m-0 text-xl leading-6 text-black font-extrabold"
+                            >
+                              Sold by
+                            </h2>
+
+                            <x-spacer
+                              height="10px"
+                              style="border-bottom: 1px solid black"
+                            />
+
+                            <div class="text-black">
+                              <p class="text-lg">@{{app}}</p>
+                              <p class="text-lg">@{{address}}</p>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr role="separator">
+              <td class="leading-12">&zwj;</td>
+            </tr>
+            <tr>
+              <td class="text-center text-slate-600 text-xs px-6">
+                <p class="m-0 mb-4 uppercase">@{{app}} &copy; @{{year}}</p>
+
+                <p class="cursor-default">
+                  <a
+                    href="https://instagram.com/"
+                    class="text-indigo-700 [text-decoration:none] hover:![text-decoration:underline]"
+                    >Instagram</a
+                  >
+                  &bull;
+                  <a
+                    href="https://facebook.com"
+                    class="text-indigo-700 [text-decoration:none] hover:![text-decoration:underline]"
+                    >Facebook</a
+                  >
+                  &bull;
+                  <a
+                    href="https://twitter.com"
+                    class="text-indigo-700 [text-decoration:none] hover:![text-decoration:underline]"
+                    >Twitter</a
+                  >
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+</x-main>

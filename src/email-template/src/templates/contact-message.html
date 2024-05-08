@@ -1,0 +1,95 @@
+---
+title: 'Contact message'
+preheader: 'A new message from @{{name}}.'
+bodyClass: bg-slate-50
+---
+
+<x-main>
+  <div class="bg-slate-50 sm:px-4 font-sans">
+    <table align="center">
+      <tr>
+        <td class="w-[552px] max-w-full">
+          <div class="my-12 sm:my-8 text-center">
+            <a href="">
+              <img src="@{{logo}}" width="120" alt="@{{app}}" />
+            </a>
+          </div>
+
+          <table class="w-full">
+            <tr>
+              <td
+                class="p-12 sm:px-6 text-base text-slate-700 bg-white rounded shadow-sm"
+              >
+                <h1
+                  class="m-0 mb-6 text-2xl sm:leading-8 text-black font-semibold"
+                >
+                  Hi Administrator,
+                </h1>
+
+                <p class="m-0 leading-6">
+                  Here is a new message
+                  <!-- <br />
+                  <br /> -->
+                </p>
+
+                <x-spacer height="24px" />
+
+                <p class="m-0 leading-6">
+                  Below were the information provided:
+                </p>
+
+                <div class="p-3 my-3 italic bg-gray-50">
+                  <div class="mb-1">
+                    <dt class="text-gray-600 md:text-lg">Name</dt>
+                    <dt class="text-lg font-medium">@{{name}}</dt>
+                  </div>
+
+                  <div>
+                    <dt class="text-gray-600 md:text-lg">Email address</dt>
+                    <dt class="text-lg font-medium">@{{email}}</dt>
+                  </div>
+
+                  <div>
+                    <dt class="text-gray-600 md:text-lg">Message</dt>
+                    <dt class="text-lg font-medium">@{{message}}</dt>
+                  </div>
+                </div>
+
+                <br />
+                <x-button href="@{{url}}"> Write Back &rarr; </x-button>
+              </td>
+            </tr>
+            <tr role="separator">
+              <td class="leading-12">&zwj;</td>
+            </tr>
+            <tr>
+              <td class="text-center text-slate-600 text-xs px-6">
+                <p class="m-0 mb-4 uppercase">@{{app}} &copy; @{{year}}</p>
+
+                <p class="cursor-default">
+                  <a
+                    href="https://instagram.com/"
+                    class="text-[#bc5cdc] [text-decoration:none] hover:![text-decoration:underline]"
+                    >Instagram</a
+                  >
+                  &bull;
+                  <a
+                    href="https://facebook.com"
+                    class="text-[#bc5cdc] [text-decoration:none] hover:![text-decoration:underline]"
+                    >Facebook</a
+                  >
+                  &bull;
+                  <a
+                    href="https://twitter.com"
+                    class="text-[#bc5cdc] [text-decoration:none] hover:![text-decoration:underline]"
+                    >Twitter</a
+                  >
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+</x-main>
