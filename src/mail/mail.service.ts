@@ -20,7 +20,7 @@ export class MailService {
     await this.mailerService.sendMail({
       to: user.email,
       // from: '"Support Team" <support@example.com>', // override default from
-      subject: `Welcome to the big leagues!`,
+      subject: `Confirm your email address!`,
       template: './email-verification', // `.hbs` extension is appended automatically
       context: {
         // ✏️ filling curly brackets with content
