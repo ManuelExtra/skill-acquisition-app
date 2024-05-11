@@ -9,8 +9,6 @@ import {
   Delete,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUser, IUser, UserRole } from './entities/user.entity';
 import { Public } from 'src/auth/decorators/auth.decorator';
 import { Roles } from 'src/auth/decorators/role.decorator';
@@ -30,7 +28,7 @@ export class UsersController {
   }
 
   @Public()
-  @Post('client/signup') // Client === host or guest
+  @Post('client/signup') // Client === student or instructor
   signup(@Body() createUserDto: CreateUser) {
     return this.usersService.signup(createUserDto);
   }

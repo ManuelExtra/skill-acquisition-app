@@ -33,7 +33,7 @@ import {
   isPriceSumSameWithTotalSupplied,
   TAXRATE,
 } from './orders.utils';
-import { PaypalService } from './provider/paypal.provider';
+import { PaystackService } from './provider/paystack.provider';
 import { CreateOrderPayload } from './orders.payload';
 import { CaptureOrderDto } from './dto/capture-order.dto';
 import { GenericPayload, PagePayload } from 'src/generic/generic.payload';
@@ -74,7 +74,7 @@ export class OrdersService extends PageService {
     private readonly transactionsService: TransactionsService,
 
     private readonly mailService: MailService,
-    private readonly paypalService: PaypalService,
+    private readonly paystackService: PaystackService,
     private readonly courseContentSubsService: CourseContentSubsService,
     private readonly assessmentQuestionsService: CourseContentSubAssessmentQuestionsService,
     private readonly assessmentAttemptsService: AssessmentAttemptsService,
@@ -425,7 +425,7 @@ export class OrdersService extends PageService {
   }
 
   /**
-   * Create order (paypal api integration)
+   * Create order (paystack api integration)
    * @param user
    * @param createOrderDto
    * @returns
@@ -446,8 +446,11 @@ export class OrdersService extends PageService {
       // Compute with tax rate
       const amountWithTax = computeAmountWithTaxRate(amount);
 
-      // Create order with paypal
-      const paypalOrder = await this.paypalService.createOrder(amountWithTax);
+      // Create order with paystack
+      const paystackOrder = await this.paystackService.intializeTransaction({
+        email: user.email,
+        amount: amountWithTax,
+      });
 
       // Prepare orderTrx data
       const orderTrx: ICourseTrx = {
@@ -455,7 +458,7 @@ export class OrdersService extends PageService {
         amount: amountWithTax,
         subAmount: amount,
         courseNo: courses.length,
-        thirdPartyRef: paypalOrder.id,
+        thirdPartyRef: paystackOrder.data.reference,
       };
       // Store transaction
       const trx = await this.transactionsService.createOrderTrx(
@@ -508,11 +511,11 @@ export class OrdersService extends PageService {
 
       return {
         statusCode: HttpStatus.CREATED,
-        message: 'Order created successfully',
+        message: 'Order initialized successfully',
         data: {
-          orderNumber: paypalOrder.id,
-          status: paypalOrder.status,
-          link: paypalOrder.links[1].href,
+          orderNumber: paystackOrder.data.reference,
+          status: paystackOrder.status,
+          link: paystackOrder.data.authorization_url,
         },
       };
     } catch (e) {
@@ -560,7 +563,7 @@ export class OrdersService extends PageService {
   }
 
   /**
-   * Confirm order (paypal api integration)
+   * Confirm order (paystack api integration)
    * @param user
    * @param orderNumberDto
    * @returns
@@ -580,8 +583,14 @@ export class OrdersService extends PageService {
         where: { id: user.sub },
       });
 
-      // Create order with paypal
-      await this.paypalService.captureOrder(thirdPartyRef);
+      // Create order with paystack
+      const response =
+        await this.paystackService.verifyTransaction(thirdPartyRef);
+
+      // Check verification status
+      if (response.data.status !== 'success') {
+        throw new BadRequestException(response.data.gateway_response);
+      }
 
       // Confirm transaction
       const trx = await this.transactionsService.confirmTrxStatusBy3rdPartyRef(

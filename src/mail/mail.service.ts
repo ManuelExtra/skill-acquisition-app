@@ -141,6 +141,7 @@ export class MailService {
         email: user.email,
         app: this.configService.get<string>('APP_NAME'),
         address: this.configService.get<string>('COMPANY_ADDRESS'),
+        logo: this.configService.get<string>('APP_LOGO'),
         items: data.items,
         trxDate: data.trxDate,
         trxNo: data.trxNo,

@@ -39,6 +39,9 @@ export class CreateUser {
 
   @IsString()
   password: string;
+
+  @IsString()
+  role: UserRole;
 }
 
 // Interfaces
@@ -59,6 +62,8 @@ export enum UserRole {
   INSTRUCTOR = 'instructor',
   STUDENT = 'student',
 }
+
+export const ClientRoles = [UserRole.INSTRUCTOR, UserRole.STUDENT];
 
 // User Model, Document & Schema
 @Injectable()

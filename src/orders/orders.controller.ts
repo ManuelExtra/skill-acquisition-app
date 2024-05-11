@@ -4,14 +4,11 @@ import {
   Request,
   Post,
   Body,
-  Patch,
   Param,
-  Delete,
   Query,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
-import { UpdateOrderDto } from './dto/update-order.dto';
 import { Roles } from 'src/auth/decorators/role.decorator';
 import { UserRole } from 'src/users/entities/user.entity';
 import { AuthPayload } from 'src/auth/entities/auth.entity';

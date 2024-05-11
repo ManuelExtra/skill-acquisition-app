@@ -1,6 +1,6 @@
 import { IsBoolean, IsOptional, IsString } from 'class-validator';
 
-export class CreateProgramDto {
+export class CreateCategoryDto {
   @IsString()
   title: string;
 

@@ -35,7 +35,7 @@ export class CreateCourseDto {
 
   @IsUUID()
   @IsNotEmpty()
-  program: IdDto['id'];
+  category: IdDto['id'];
 
   @IsOptional()
   @IsBoolean()

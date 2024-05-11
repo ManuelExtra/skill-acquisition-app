@@ -1,5 +1,4 @@
 import { IdDto } from 'src/generic/dto/generic.dto';
-import { Programs } from 'src/programs/entities/program.entity';
 import { Users } from 'src/users/entities/user.entity';
 import {
   Column,
@@ -20,6 +19,7 @@ import { CreateAssessmentResultDto } from '../dto/create-assessment-result.dto';
 import { OrderItems } from 'src/orders/entities/order-items.entity';
 import { CourseReads } from 'src/reads/entities/course-reads.entity';
 import { Reviews } from 'src/reviews/entities/reviews.entity';
+import { Categories } from 'src/categories/entities/categories.entity';
 
 // Interfaces
 export interface ICourse {
@@ -31,7 +31,7 @@ export interface ICourse {
     email: string;
     role: string;
   };
-  program?: {
+  category?: {
     id: string;
   };
 }
@@ -104,8 +104,8 @@ export class Courses {
   @ManyToOne(() => Users, (user) => user.courses)
   instructor: Users['id'];
 
-  @ManyToOne(() => Programs, (program) => program.courses)
-  program: Programs['id'];
+  @ManyToOne(() => Categories)
+  category: Categories['id'];
 
   @OneToMany((type) => CourseContents, (courseContent) => courseContent.course)
   contents: CourseContents[];
@@ -135,7 +135,7 @@ export class Courses {
     course.isPublished = createCourseDto.isPublished;
     course.coverImage = createCourseDto.coverImage;
     course.instructor = instructor.id;
-    course.program = createCourseDto.program;
+    course.category = createCourseDto.category;
 
     return course;
   }

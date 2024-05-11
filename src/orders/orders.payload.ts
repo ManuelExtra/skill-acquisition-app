@@ -5,7 +5,7 @@ export class CreateOrderPayload {
   message: string;
   data: {
     orderNumber: string;
-    status: string;
+    status: boolean;
     link: string;
   };
 }

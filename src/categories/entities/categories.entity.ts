@@ -9,23 +9,23 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { CreateProgramDto } from '../dto/create-program.dto';
+import { CreateCategoryDto } from '../dto/create-category.dto';
 
 // Interfaces
-export interface IProgram {
+export interface ICategory {
   title?: string;
   published?: number;
 }
 
 @Entity()
-export class Programs {
+export class Categories {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
   title: string;
 
-  @OneToMany((type) => Courses, (course) => course.program)
+  @OneToMany((type) => Courses, (course) => course.category)
   courses: Courses[];
 
   @Column({ default: false })
@@ -40,13 +40,13 @@ export class Programs {
   @DeleteDateColumn()
   deletedDate: Date;
 
-  create(createProgramDto: CreateProgramDto) {
-    const program = new Programs();
-    program.title = createProgramDto.title;
+  create(createCategoryDto: CreateCategoryDto) {
+    const Category = new Categories();
+    Category.title = createCategoryDto.title;
 
-    program.isPublished = createProgramDto.isPublished;
+    Category.isPublished = createCategoryDto.isPublished;
 
-    return program;
+    return Category;
   }
 
   client() {

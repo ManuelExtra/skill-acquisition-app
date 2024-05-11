@@ -17,6 +17,7 @@ import {
   UserRole,
   UserSchema,
   IUser,
+  ClientRoles,
 } from './entities/user.entity';
 import { MailService } from 'src/mail/mail.service';
 import { JwtService } from '@nestjs/jwt';
@@ -169,7 +170,7 @@ export class UsersService extends PageService {
 
   // host & guest signup
   async signup(createUserDto: CreateUser) {
-    const { email, phone } = createUserDto;
+    const { email, phone, role } = createUserDto;
 
     if (await this.usersRepository.findOneBy({ email })) {
       throw new BadRequestException('This email has been registered.');
@@ -179,8 +180,15 @@ export class UsersService extends PageService {
       throw new BadRequestException('This phone number has been registered.');
     }
 
+    const isClient = ClientRoles.includes(role);
+    if (!isClient) {
+      throw new BadRequestException(
+        `Invalid role. The allowed roles are: ${ClientRoles.join(', ')}`,
+      );
+    }
+
     // Save provided details
-    const user = this.userDoc.createUser(createUserDto, UserRole.STUDENT);
+    const user = this.userDoc.createUser(createUserDto, role);
     const savedUserInfo = await this.usersRepository.save(user);
 
     // Create email verification payload

@@ -1,19 +1,14 @@
 import { IdDto } from 'src/generic/dto/generic.dto';
-import { Orders } from 'src/orders/entities/orders.entity';
 import { Users } from 'src/users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  JoinColumn,
   ManyToOne,
-  OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { CreateTransactionDto } from '../dto/create-transaction.dto';
 import { courseNarration, generateTrxNumber } from '../transactions.utils';
 
 // Interfaces
@@ -47,6 +42,7 @@ export enum TransactionPurpose {
 export enum PaymentGateway {
   STRIPE = 'stripe',
   PAYPAL = 'paypal',
+  PAYSTACK = 'paystack',
 }
 
 @Entity()
@@ -75,7 +71,7 @@ export class Transactions {
   @Column()
   narration: string;
 
-  @Column({ default: PaymentGateway.PAYPAL })
+  @Column({ default: PaymentGateway.PAYSTACK })
   gateway: PaymentGateway;
 
   @Column({ default: TransactionPurpose.COURSE })

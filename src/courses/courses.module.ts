@@ -22,16 +22,18 @@ import {
   CourseContentSubs,
   Courses,
 } from './entities/course.entity';
-import { ProgramsModule } from 'src/programs/programs.module';
 import { UsersModule } from 'src/users/users.module';
 import { NotificationsModule } from 'src/notifications/notifications.module';
+import { CategoriesModule } from 'src/categories/categories.module';
+import { Categories } from 'src/categories/entities/categories.entity';
 
 @Module({
   imports: [
-    ProgramsModule,
     UsersModule,
     NotificationsModule,
+    CategoriesModule,
     TypeOrmModule.forFeature([
+      Categories,
       Courses,
       CourseContents,
       CourseContentSubs,

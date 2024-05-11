@@ -43,9 +43,9 @@ export class AuthGuard implements CanActivate {
         secret: this.configService.get('JWT_SECRET'),
       })) as AuthPayload['user'];
 
-      // const { sub } = payload;
+      const { sub } = payload;
 
-      // let user = await this.usersService.findOne(sub);
+      await this.usersService.findOne(sub);
 
       // 💡 We're assigning the payload to the request object here
       // so that we can access it in our route handlers

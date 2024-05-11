@@ -19,8 +19,6 @@ import {
   Courses,
 } from './courses/entities/course.entity';
 import { CourseReads } from './reads/entities/course-reads.entity';
-import { ProgramsModule } from './programs/programs.module';
-import { Programs } from './programs/entities/program.entity';
 import { OrdersModule } from './orders/orders.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { Orders } from './orders/entities/orders.entity';
@@ -31,6 +29,7 @@ import { ReviewsModule } from './reviews/reviews.module';
 import { Reviews } from './reviews/entities/reviews.entity';
 import { NotificationsModule } from './notifications/notifications.module';
 import { Notifications } from './notifications/entities/notifications.entity';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
   imports: [
@@ -52,7 +51,6 @@ import { Notifications } from './notifications/entities/notifications.entity';
         database: configService.get<string>('database.name'),
         entities: [
           Users,
-          Programs,
           Courses,
           CourseContents,
           CourseContentSubs,
@@ -81,12 +79,12 @@ import { Notifications } from './notifications/entities/notifications.entity';
     UploadModule,
     GenericModule,
     CoursesModule,
-    ProgramsModule,
     OrdersModule,
     TransactionsModule,
     ReadsModule,
     ReviewsModule,
     NotificationsModule,
+    CategoriesModule,
   ],
 })
 export class AppModule {

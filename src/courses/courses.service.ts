@@ -14,7 +14,6 @@ import {
   SortOrder,
 } from 'src/generic/pagination/generic-filter';
 import { PageService } from 'src/generic/pagination/page.service';
-import { ProgramsService } from 'src/programs/programs.service';
 import { DataSource, In, Like, Not, QueryRunner, Repository } from 'typeorm';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { CreateCourseContentDto } from './dto/create-course-content.dto';
@@ -45,6 +44,7 @@ import { ChangeContentSubOrderDto } from './dto/change-content-sub-order.dto';
 import { CreateAssessmentResultDto } from './dto/create-assessment-result.dto';
 import { UserRole } from 'src/users/entities/user.entity';
 import { NotificationsService } from 'src/notifications/notifications.service';
+import { CategoriesService } from 'src/categories/categories.service';
 
 /**
  * Courses logic
@@ -55,7 +55,7 @@ export class CoursesService extends PageService {
     @InjectRepository(Courses)
     protected coursesRepository: Repository<Courses>,
     protected readonly courses: Courses,
-    protected readonly programService: ProgramsService,
+    protected readonly categoriesService: CategoriesService,
   ) {
     super();
   }
@@ -85,9 +85,9 @@ export class CoursesService extends PageService {
       };
     }
 
-    if (params.program) {
-      where.program = {
-        id: params.program.id,
+    if (params.category) {
+      where.category = {
+        id: params.category.id,
       };
     }
 
@@ -104,10 +104,10 @@ export class CoursesService extends PageService {
     createCourseDto: CreateCourseDto,
     data: AuthPayload['user'],
   ): Promise<GenericPayload> {
-    const { title, program } = createCourseDto;
+    const { title, category } = createCourseDto;
 
-    // Check program
-    await this.programService.findOne(program);
+    // Check category
+    await this.categoriesService.findOne(category);
 
     const course = this.courses.create(createCourseDto, {
       id: data.sub,
@@ -118,7 +118,7 @@ export class CoursesService extends PageService {
       where: {
         title,
         // @ts-ignore
-        program: { id: program },
+        category: { id: category },
       },
     });
 
@@ -148,7 +148,7 @@ export class CoursesService extends PageService {
 
     const select = {
       // @ts-ignore
-      program: {
+      category: {
         id: true,
         title: true,
       },
@@ -162,7 +162,7 @@ export class CoursesService extends PageService {
       },
     };
 
-    const relations = ['program', 'instructor'];
+    const relations = ['category', 'instructor'];
 
     const [results, total] = await this.paginateRelWithSelect(
       this.coursesRepository,
@@ -189,7 +189,7 @@ export class CoursesService extends PageService {
 
     const select = {
       // @ts-ignore
-      program: {
+      category: {
         id: true,
         title: true,
       },
@@ -204,7 +204,7 @@ export class CoursesService extends PageService {
       this.coursesRepository,
       filter,
       where,
-      ['program'],
+      ['category'],
       select,
     );
     return {
@@ -227,7 +227,7 @@ export class CoursesService extends PageService {
 
     const select = {
       // @ts-ignore
-      program: {
+      category: {
         id: true,
         title: true,
       },
@@ -244,7 +244,7 @@ export class CoursesService extends PageService {
       this.coursesRepository,
       filter,
       where,
-      ['program'],
+      ['category'],
       select,
     );
     return {
@@ -274,7 +274,7 @@ export class CoursesService extends PageService {
 
     const course = await this.coursesRepository.findOne({
       where,
-      relations: ['instructor', 'program', 'contents.courseContentSubs'],
+      relations: ['instructor', 'category', 'contents.courseContentSubs'],
     });
 
     if (!course) {
@@ -337,7 +337,7 @@ export class CoursesService extends PageService {
         // @ts-ignore
         instructor: { id: data.sub },
       },
-      relations: ['instructor', 'program', 'contents.courseContentSubs'],
+      relations: ['instructor', 'category', 'contents.courseContentSubs'],
     });
 
     if (!course) {
@@ -452,9 +452,9 @@ export class CourseContentsService extends CoursesService {
     protected coursesRepository: Repository<Courses>,
     protected readonly courses: Courses,
 
-    protected readonly programService: ProgramsService,
+    protected readonly categoriesService: CategoriesService,
   ) {
-    super(coursesRepository, courses, programService);
+    super(coursesRepository, courses, categoriesService);
   }
 
   /**
@@ -837,14 +837,14 @@ export class CourseContentSubsService extends CourseContentsService {
     @InjectRepository(Courses)
     protected coursesRepository: Repository<Courses>,
     protected readonly courses: Courses,
-    protected readonly programService: ProgramsService,
+    protected readonly categoriesService: CategoriesService,
   ) {
     super(
       courseContentsRepository,
       courseContents,
       coursesRepository,
       courses,
-      programService,
+      categoriesService,
     );
   }
 
@@ -1270,7 +1270,7 @@ export class CourseContentSubAssessmentQuestionsService extends CourseContentSub
     @InjectRepository(Courses)
     protected coursesRepository: Repository<Courses>,
     protected readonly courses: Courses,
-    protected readonly programService: ProgramsService,
+    protected readonly categoriesService: CategoriesService,
   ) {
     super(
       courseContentSubsRepository,
@@ -1279,7 +1279,7 @@ export class CourseContentSubAssessmentQuestionsService extends CourseContentSub
       courseContents,
       coursesRepository,
       courses,
-      programService,
+      categoriesService,
     );
   }
 
