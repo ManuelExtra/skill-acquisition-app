@@ -12,7 +12,11 @@ import {
 import { Roles } from 'src/auth/decorators/role.decorator';
 import { AuthPayload } from 'src/auth/entities/auth.entity';
 import { IdDto } from 'src/generic/dto/generic.dto';
-import { GenericPayload, PagePayload } from 'src/generic/generic.payload';
+import {
+  GenericPayload,
+  GenericPayloadAlias,
+  PagePayload,
+} from 'src/generic/generic.payload';
 import { GenericFilter } from 'src/generic/pagination/generic-filter';
 import { UserRole } from 'src/users/entities/user.entity';
 import {
@@ -198,7 +202,7 @@ export class CourseContentsController {
   create(
     @Request() req: AuthPayload,
     @Body() createCourseContentDto: CreateCourseContentDto,
-  ): Promise<GenericPayload> {
+  ): Promise<GenericPayloadAlias<{ id: CourseContents['id'] }>> {
     return this.courseContentsService.createCourseContent(
       req.user,
       createCourseContentDto,

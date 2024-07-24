@@ -76,6 +76,19 @@ export class CategoriesController {
   }
 
   /**
+   * View categoies endpoint
+   * @param filter
+   * @returns
+   */
+  @Get('fetch-public-categories')
+  @Public()
+  findAllPublicCategories(
+    @Query() filter: GenericFilter & ICategory,
+  ): Promise<PagePayload<Categories>> {
+    return this.categoriesService.findAllPublicCategories(filter);
+  }
+
+  /**
    * View category endpoint by id
    * @param categoryIdDto
    * @returns

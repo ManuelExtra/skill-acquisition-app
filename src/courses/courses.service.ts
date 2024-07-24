@@ -8,7 +8,11 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthPayload } from 'src/auth/entities/auth.entity';
 import { IdDto, IdDtoAlias } from 'src/generic/dto/generic.dto';
-import { GenericPayload, PagePayload } from 'src/generic/generic.payload';
+import {
+  GenericPayload,
+  GenericPayloadAlias,
+  PagePayload,
+} from 'src/generic/generic.payload';
 import {
   GenericFilter,
   SortOrder,
@@ -103,15 +107,11 @@ export class CoursesService extends PageService {
   async create(
     createCourseDto: CreateCourseDto,
     data: AuthPayload['user'],
-  ): Promise<GenericPayload> {
+  ): Promise<GenericPayloadAlias<{ id: Courses['id'] }>> {
     const { title, category } = createCourseDto;
 
     // Check category
     await this.categoriesService.findOne(category);
-
-    const course = this.courses.create(createCourseDto, {
-      id: data.sub,
-    } as IdDto);
 
     // Check course by title
     const savedCourse = await this.coursesRepository.findOne({
@@ -128,11 +128,16 @@ export class CoursesService extends PageService {
       );
     }
 
+    const course = this.courses.create(createCourseDto, {
+      id: data.sub,
+    } as IdDto);
+
     await this.coursesRepository.save(course);
 
     return {
       statusCode: HttpStatus.CREATED,
       message: 'Course created successfully',
+      data: { id: course.id },
     };
   }
 
@@ -486,13 +491,11 @@ export class CourseContentsService extends CoursesService {
   async createCourseContent(
     data: AuthPayload['user'],
     createCourseContentDto: CreateCourseContentDto,
-  ): Promise<GenericPayload> {
+  ): Promise<GenericPayloadAlias<{ id: CourseContents['id'] }>> {
     const { title, course } = createCourseContentDto;
 
     // Check course
     await this.findOneForInstructor(data, course);
-
-    const courseContent = this.courseContents.create(createCourseContentDto);
 
     // Check course content by title
     const savedCourseContent = await this.courseContentsRepository.findOne({
@@ -508,10 +511,14 @@ export class CourseContentsService extends CoursesService {
         `Course content with this title '${title}' already exists.`,
       );
     }
+
+    const courseContent = this.courseContents.create(createCourseContentDto);
+
     await this.courseContentsRepository.save(courseContent);
     return {
       statusCode: HttpStatus.CREATED,
       message: 'Course content created successfully',
+      data: { id: courseContent.id },
     };
   }
 

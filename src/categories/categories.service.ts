@@ -158,6 +158,32 @@ export class CategoriesService extends PageService {
   }
 
   /**
+   * View categories public only (with pagination)
+   * @param filter
+   * @returns
+   */
+  async findAllPublicCategories(
+    filter: GenericFilter & ICategory,
+  ): Promise<PagePayload<Categories>> {
+    const { ...params } = filter;
+
+    const where = {
+      ...this.createCategoryWhereQuery(params),
+      isPublished: true,
+    };
+
+    const [results, total] = await this.paginate(
+      this.categoriesRepository,
+      filter,
+      where,
+    );
+    return {
+      data: results,
+      count: total,
+    };
+  }
+
+  /**
    * View category with id
    * @param id
    * @returns

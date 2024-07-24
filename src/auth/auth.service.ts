@@ -69,8 +69,10 @@ export class AuthService {
 
     const user = await this.usersService.findOne(sub);
 
-    user.isActive = true;
-    await this.usersRepository.save(user);
+    if (!user.isActive) {
+      user.isActive = true;
+      await this.usersRepository.save(user);
+    }
 
     return {
       statusCode: HttpStatus.OK,
