@@ -491,7 +491,7 @@ export class CourseContentsService extends CoursesService {
   async createCourseContent(
     data: AuthPayload['user'],
     createCourseContentDto: CreateCourseContentDto,
-  ): Promise<GenericPayloadAlias<{ id: CourseContents['id'] }>> {
+  ): Promise<GenericPayloadAlias<CourseContents>> {
     const { title, course } = createCourseContentDto;
 
     // Check course
@@ -518,7 +518,7 @@ export class CourseContentsService extends CoursesService {
     return {
       statusCode: HttpStatus.CREATED,
       message: 'Course content created successfully',
-      data: { id: courseContent.id },
+      data: courseContent,
     };
   }
 
