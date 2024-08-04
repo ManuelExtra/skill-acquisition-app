@@ -36,7 +36,7 @@ export class VideoFileSizeValidationPipe implements PipeTransform {
     }
 
     const { mimetype, size } = value;
-    console.log(mimetype);
+
     const MIME_TYPES = ['video/webm', 'video/mp4', 'video/mpeg'];
     if (!MIME_TYPES.includes(mimetype)) {
       throw new BadRequestException(

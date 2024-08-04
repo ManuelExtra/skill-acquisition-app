@@ -31,7 +31,7 @@ export class CreateCourseContentSubDto {
   @IsNotEmpty()
   media: string; // Paid for to view - This could be a url or an html content
 
-  @IsUrl()
+  @IsString()
   @IsOptional()
   previewUrl: string; // Not paid for to view
 

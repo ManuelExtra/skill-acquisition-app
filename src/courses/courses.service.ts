@@ -922,7 +922,7 @@ export class CourseContentSubsService extends CourseContentsService {
   async createCourseContentSub(
     createCourseContentSubDto: CreateCourseContentSubDto,
     user?: AuthPayload['user'],
-  ): Promise<GenericPayload> {
+  ): Promise<GenericPayloadAlias<CourseContentSubs>> {
     const { title, course, courseContent } = createCourseContentSubDto;
 
     // Check course
@@ -960,12 +960,18 @@ export class CourseContentSubsService extends CourseContentsService {
       courseContent,
     );
 
-    // Save course
+    // Save course content sub
     await this.courseContentSubsRepository.insert(courseContentSub);
+
+    // Fetch course content sub
+    const savedContentSub = await this.findOneContentSub(
+      courseContentSub.id as IdDto['id'],
+    );
 
     return {
       statusCode: HttpStatus.CREATED,
       message: 'Course content sub created successfully',
+      data: savedContentSub,
     };
   }
 
@@ -992,10 +998,13 @@ export class CourseContentSubsService extends CourseContentsService {
       courseContent: { id },
     };
 
-    const [results, total] = await this.paginate(
+    const relations = ['course', 'courseContent'];
+
+    const [results, total] = await this.paginateRel(
       this.courseContentSubsRepository,
       filter,
       where,
+      relations,
     );
 
     return {
